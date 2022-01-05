@@ -183,7 +183,7 @@ func TestSortList(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := SortList(tt.args.head); !got.Eq(tt.want) {
-				t.Errorf("SortList() = %v, want %v", got, tt.want)
+				t.Errorf("SortList() = %v, want %v", got.Print(), tt.want.Print())
 			}
 		})
 	}

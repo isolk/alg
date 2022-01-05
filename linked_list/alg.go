@@ -75,12 +75,23 @@ func SortList(head *ListNode) *ListNode {
 }
 
 func mergeSort(head *ListNode) *ListNode {
-	fast, slow := head, head.Next
-	for fast.Next != nil {
-		slow = slow.Next
-		fast = fast.Next
+	if head == nil || head.Next == nil {
+		return head
 	}
-	mergeSort(head)
+
+	fast, slow := head, head
+	for fast.Next != nil && fast.Next.Next != nil {
+		slow = slow.Next
+		fast = fast.Next.Next
+	}
+
+	right := slow.Next
+	slow.Next = nil
+
+	left := head
+	left = mergeSort(left)
+	right = mergeSort(right)
+	return merge(left, right)
 }
 
 func merge(a, b *ListNode) *ListNode {
@@ -94,13 +105,14 @@ func merge(a, b *ListNode) *ListNode {
 	sentinel := &ListNode{}
 	it := sentinel
 	for a != nil && b != nil {
-		if a.Val > b.Val {
+		if a.Val <= b.Val {
 			it.Next = a
 			a = a.Next
 		} else {
 			it.Next = b
 			b = b.Next
 		}
+		it = it.Next
 	}
 
 	if a != nil {
